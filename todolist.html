@@ -1,0 +1,82 @@
+<!--
+ * @Descripption: 
+ * @version: 
+ * @Author: LiYuan
+ * @Date: 2023-02-09 15:01:40
+ * @LastEditors: LiYuan
+ * @LastEditTime: 2023-02-09 16:32:04
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="root">
+
+    </div>
+    <script type="text/javascript" src="./js/react.development.js"></script>
+    <script type="text/javascript" src="./js/react-dom.development.js"></script>
+    <script type="text/javascript" src="./js/babel.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/prop-types/15.8.1/prop-types.js"></script>
+    <script type="text/babel">
+        class APP extends React.Component {
+            state={
+                ArrList:['吃饭','睡觉','打豆豆']
+            }
+            count=3
+            AddData=(data)=>{
+                let {ArrList}=this.state
+                ArrList.unshift(data)
+                this.count=ArrList.length
+                this.setState({ArrList:ArrList})
+            }
+            render() {
+                let {ArrList}=this.state
+                return (
+                    <div>
+                        <h1>Simple ToDoList Demo</h1>
+                        <Add method={this.AddData} count={this.count}/>
+                        <List  ArrList={ArrList}/>
+                    </div>
+                )
+            }
+        }
+        class Add extends React.Component {
+            input=React.createRef()
+            add=()=>{
+                if(this.input.current.value.trim()==''){
+                    return
+                }
+                this.props.method(this.input.current.value)
+            }
+            render() {
+                return (
+                    <div>
+                        <input type="text" ref={this.input}/>&nbsp;
+                        <button onClick={this.add}>add#{this.props.count}</button>
+                    </div>
+                )
+            }
+        }
+        class List extends React.Component {
+            render() {
+                return (
+                    <ul>
+                        {this.props.ArrList.map((item,index)=><li key={index}>{item}</li>)}
+                    </ul>
+                )
+            }
+        }
+        const root = ReactDOM.createRoot(document.getElementById('root'))
+        const el = <APP />
+        root.render(el)
+    </script>
+</body>
+
+</html>
